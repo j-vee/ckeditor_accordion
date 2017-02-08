@@ -32,6 +32,7 @@
           return;
         }
         var command = editor.getCommand('addAccordionCmd');
+
         var element = evt.data.path.lastElement && evt.data.path.lastElement.getAscendant('ul', true);
         if (element) {
           command.setState(CKEDITOR.TRISTATE_DISABLED);
