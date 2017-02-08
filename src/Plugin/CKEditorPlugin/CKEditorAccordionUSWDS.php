@@ -1,10 +1,10 @@
 <?php
 /**
  * @file
- * Contains \Drupal\drupal_ckeditor_accordion_uswds\Plugin\CKEditorPlugin\CKEditorAccordionUSWDS.
+ * Contains \Drupal\ckeditor_accordion_uswds\Plugin\CKEditorPlugin\CKEditorAccordionUSWDS.
  */
 
-namespace Drupal\drupal_ckeditor_accordion_uswds\Plugin\CKEditorPlugin;
+namespace Drupal\ckeditor_accordion_uswds\Plugin\CKEditorPlugin;
 
 use Drupal\ckeditor\CKEditorPluginBase;
 use Drupal\editor\Entity\Editor;
@@ -13,9 +13,9 @@ use Drupal\editor\Entity\Editor;
  * Defines the "CKEditorAccordion" plugin.
  *
  * @CKEditorPlugin (
- *   id = "accordion",
- *   label = @Translation("CKEditorAccordion"),
- *   module = "ckeditor_accordion"
+ *   id = "ckeditor_accordion_uswds",
+ *   label = @Translation("CKEditorAccordionUSWDS"),
+ *   module = "ckeditor_accordion_uswds"
  * )
  */
 class CKEditorAccordionUSWDS extends CKEditorPluginBase {
@@ -39,14 +39,14 @@ class CKEditorAccordionUSWDS extends CKEditorPluginBase {
    * {@inheritdoc}
    */
   public function getFile() {
-    return drupal_get_path('module', 'drupal_ckeditor_accordion_uswds') . '/js/plugins/accordion/plugin.js';
+    return drupal_get_path('module', 'ckeditor_accordion_uswds') . '/js/plugins/accordion/plugin.js';
   }
 
   /**
    * {@inheritdoc}
    */
   public function getButtons() {
-    $path = drupal_get_path('module', 'drupal_ckeditor_accordion_uswds') . '/js/plugins/accordion/icons';
+    $path = drupal_get_path('module', 'ckeditor_accordion_uswds') . '/js/plugins/accordion/icons';
     return array(
       'Accordion' => array(
         'label' => t('Add Accordion'),

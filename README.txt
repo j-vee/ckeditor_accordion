@@ -22,3 +22,4 @@ INSTALLATION:
 3. Edit a text format's settings (usually Basic HTML)
 4. Drag n Drop the Add Accordion -button to the toolbar to show it to the users
 5. Scroll down to the bottom to the input Allowed HTML tags
+6.  add these to the list<ul type class><li data-index> <button class aria-*><div id class>

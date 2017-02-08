@@ -1,9 +1,0 @@
-name: Drupal CKEditor Accordion USWDS
-type: module
-description: Allows users to create & display content in an accordion using with the US Web Design Standards in CKEditor.
-core: 8.x
-package: CKEditor
-libraries:
-  - drupal_ckeditor_accordion_uswds/accordion_style
-dependencies:
-  - ckeditor
