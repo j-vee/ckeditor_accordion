@@ -1,22 +1,21 @@
 /* Small CSS to differentiate tabs durng edition */
-dl.ckeditor-accordion {
+.usa-accordion {
   border: dashed 2px #d81b60;
   padding: 40px 20px 0;
   position: relative;
 }
-dl.ckeditor-accordion dt {
+.usa-accordion li button {
   border: dashed 1px #1e88e5;
   display: inline-block;
   padding: 5px 10px;
 }
-dl.ckeditor-accordion dd {
+.usa-accordion li div {
   border: dashed 1px #43a047;
   margin: 5px 0 20px 20px;
   padding: 0 10px;
 }
 
-dl.ckeditor-accordion:before {
-  content: 'Accordion';
+.usa-accordion:before {
   position: absolute;
   left: 0;
   top: 5px;

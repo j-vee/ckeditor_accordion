@@ -7,7 +7,7 @@
   'use strict';
 
   // Register plugin.
-  CKEDITOR.plugins.add('accordion', {
+  CKEDITOR.plugins.add('ckeditor_accordion_uswds', {
     hidpi: true,
     icons: 'accordion',
     init: function (editor) {
@@ -32,7 +32,8 @@
           return;
         }
         var command = editor.getCommand('addAccordionCmd');
-        var element = evt.data.path.lastElement && evt.data.path.lastElement.getAscendant('dl', true);
+
+        var element = evt.data.path.lastElement && evt.data.path.lastElement.getAscendant('ul', true);
         if (element) {
           command.setState(CKEDITOR.TRISTATE_DISABLED);
         }
@@ -41,21 +42,24 @@
         }
       });
 
-      var allowedContent = 'dl dd dt(!ckeditor-accordion)';
+      var allowedContent = 'ul(usa-accordion); li[data-index]; button(usa-accordion-button); button[aria-*]; div(accordion-content) div[id]';
 
       // Command to insert initial structure.
       editor.addCommand('addAccordionCmd', {
         allowedContent: allowedContent,
 
         exec: function (editor) {
-          var dl = new CKEDITOR.dom.element.createFromHtml(
-            '<dl class="ckeditor-accordion">' +
-              '<dt>Accordion title 1</dt>' +
-              '<dd><p>Accordion content 1.</p></dd>' +
-              '<dt>Accordion title 2</dt>' +
-              '<dd><p>Accordion content 2.</p></dd>' +
-            '</dl>');
-          editor.insertElement(dl);
+          var ul = new CKEDITOR.dom.element.createFromHtml(
+            '<ul class="usa-accordion">' +
+              '<li data-index="1000">' +
+              '<button class="usa-accordion-button" aria-controls="accordion_content_1000" >Accordion title 1</button>' +
+              '<div id="accordion_content_1000" class="usa-accordion-content"><p>Accordion content 1.</p></dd>' +
+              '</li>' +
+              '<li data-index="2000">' +
+              '<button class="usa-accordion-button" aria-controls="accordion_content_2000">Accordion title 2</button>' +
+              '<div id="accordion_content_2000" class="usa-accordion-content"><p>Accordion content 2.</p></div>' +
+            '</ul>');
+          editor.insertElement(ul);
         }
       });
 
@@ -65,15 +69,18 @@
 
         exec: function (editor) {
           var element = editor.getSelection().getStartElement();
-          var newHeader = new CKEDITOR.dom.element.createFromHtml('<dt>New accordion title</dt>');
-          var newContent = new CKEDITOR.dom.element.createFromHtml('<dd><p>New accordion content</p></dd>');
-          if (element.getAscendant('dd', true)) {
-            element = element.getAscendant('dd', true).getPrevious();
+          if (element.getAscendant('div', true)) {
+            element = element.getAscendant('div', true).getParent();
           }
           else {
-            element = element.getAscendant('dt', true);
+            element = element.getAscendant('button', true).getParent();
           }
-          newHeader.insertBefore(element);
+          var newId = (element.data("data-index") - 1);
+          var newHtml = '<li data-index="' +newId + '"><button class="usa-accordion-button" aria-controls="accordion_content_' +newId + '">New accordion title</button>' +
+          '<div id="accordion_content_' +newId + '" class="usa-accordion-content">' +
+          '<p>New accordion content</p>' +
+          '</div></li>';
+          var newContent = new CKEDITOR.dom.element.createFromHtml(newHtml);
           newContent.insertBefore(element);
         }
       });
@@ -82,32 +89,35 @@
 
         exec: function (editor) {
           var element = editor.getSelection().getStartElement();
-          var newHeader = new CKEDITOR.dom.element.createFromHtml('<dt>New accordion title</dt>');
-          var newContent = new CKEDITOR.dom.element.createFromHtml('<dd><p>New accordion content</p></dd>');
-          if (element.getAscendant('dt', true)) {
-            element = element.getAscendant('dt', true).getNext();
+          //var newContent = new CKEDITOR.dom.element.createFromHtml('<li><button class="usa-accordion-button">New accordion title</button><div class="usa-accordion-content"><p>New accordion content</p></div></li>');
+          if (element.getAscendant('button', true)) {
+            element = element.getAscendant('button', true).getParent();
           }
           else {
-            element = element.getAscendant('dd', true);
+            element = element.getAscendant('div', true).getParent();
           }
+          var newId = (element.data("data-index") + 1);
+          var newHtml = '<li data-index="' +newId + '"><button class="usa-accordion-button" aria-controls="accordion_content_' +newId + '">New accordion title</button>' +
+          '<div id="accordion_content_' +newId + '" class="usa-accordion-content">' +
+          '<p>New accordion content</p>' +
+          '</div></li>';
+          var newContent = new CKEDITOR.dom.element.createFromHtml(newHtml);
           newContent.insertAfter(element);
-          newHeader.insertAfter(element);
+
         }
       });
       editor.addCommand('removeAccordionTab', {
         exec: function (editor) {
           var element = editor.getSelection().getStartElement();
           var a;
-          if (element.getAscendant('dt', true)) {
-            a = element.getAscendant('dt', true);
-            a.getNext().remove();
+          if (element.getAscendant('button', true)) {
+            a = element.getAscendant('button', true).getParent();
             a.remove();
           }
           else {
-            a = element.getAscendant('dd', true);
+            a = element.getAscendant('div', true);
             if (a) {
-              a.getPrevious().remove();
-              a.remove();
+              a.getParent().remove();
             }
             else {
               element.remove();
@@ -139,8 +149,8 @@
         });
 
         editor.contextMenu.addListener(function (element) {
-          var parentEl = element.getAscendant('dl', true);
-          if (parentEl && parentEl.hasClass('ckeditor-accordion')) {
+          var parentEl = element.getAscendant('ul', true);
+          if (parentEl && parentEl.hasClass('usa-accordion')) {
             return {
               accordionTabBeforeItem: CKEDITOR.TRISTATE_OFF,
               accordionTabAfterItem: CKEDITOR.TRISTATE_OFF,
