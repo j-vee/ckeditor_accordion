@@ -4,8 +4,6 @@
  */
 
 (function () {
-  'use strict';
-
   // Register plugin.
   CKEDITOR.plugins.add('ckeditor_accordion_uswds', {
     hidpi: true,
@@ -32,13 +30,15 @@
           return;
         }
         var command = editor.getCommand('addAccordionCmd');
-
+        var commandList = editor.getCommand('bulletedlist');
         var element = evt.data.path.lastElement && evt.data.path.lastElement.getAscendant('ul', true);
         if (element) {
           command.setState(CKEDITOR.TRISTATE_DISABLED);
+          commandList.setState(CKEDITOR.TRISTATE_DISABLED);
         }
         else {
           command.setState(CKEDITOR.TRISTATE_OFF);
+          commandList.setState(CKEDITOR.TRISTATE_OFF);
         }
       });
 
@@ -49,15 +49,17 @@
         allowedContent: allowedContent,
 
         exec: function (editor) {
+          var newId = Math.random().toString();
+          newId = newId.replace('.', '');
           var ul = new CKEDITOR.dom.element.createFromHtml(
             '<ul class="usa-accordion">' +
-              '<li data-index="1000">' +
-              '<button class="usa-accordion-button" aria-controls="accordion_content_1000" >Accordion title 1</button>' +
-              '<div id="accordion_content_1000" class="usa-accordion-content"><p>Accordion content 1.</p></dd>' +
+              '<li data-index="' + newId + '">' +
+              '<button class="usa-accordion-button" aria-expanded="true" aria-controls="accordion_content_' + newId + '" >Accordion title 1</button>' +
+              '<div id="accordion_content_' + newId + '" class="usa-accordion-content"><p>Accordion content 1.</p></dd>' +
               '</li>' +
-              '<li data-index="2000">' +
-              '<button class="usa-accordion-button" aria-controls="accordion_content_2000">Accordion title 2</button>' +
-              '<div id="accordion_content_2000" class="usa-accordion-content"><p>Accordion content 2.</p></div>' +
+              '<li data-index="' + (newId + 1) + '">' +
+              '<button class="usa-accordion-button" aria-expanded="true" aria-controls="accordion_content_' + (newId + 1) + '">Accordion title 2</button>' +
+              '<div id="accordion_content_' + (newId + 1) + '" class="usa-accordion-content"><p>Accordion content 2.</p></div>' +
             '</ul>');
           editor.insertElement(ul);
         }
@@ -75,9 +77,10 @@
           else {
             element = element.getAscendant('button', true).getParent();
           }
-          var newId = (element.data("data-index") - 1);
-          var newHtml = '<li data-index="' +newId + '"><button class="usa-accordion-button" aria-controls="accordion_content_' +newId + '">New accordion title</button>' +
-          '<div id="accordion_content_' +newId + '" class="usa-accordion-content">' +
+          var newId = Math.random().toString();
+          newId = newId.replace('.', '');
+          var newHtml = '<li data-index="' + newId + '"><button class="usa-accordion-button" aria-expanded="true" aria-controls="accordion_content_' + newId + '">New accordion title</button>' +
+          '<div id="accordion_content_' + newId + '" class="usa-accordion-content">' +
           '<p>New accordion content</p>' +
           '</div></li>';
           var newContent = new CKEDITOR.dom.element.createFromHtml(newHtml);
@@ -89,16 +92,16 @@
 
         exec: function (editor) {
           var element = editor.getSelection().getStartElement();
-          //var newContent = new CKEDITOR.dom.element.createFromHtml('<li><button class="usa-accordion-button">New accordion title</button><div class="usa-accordion-content"><p>New accordion content</p></div></li>');
           if (element.getAscendant('button', true)) {
             element = element.getAscendant('button', true).getParent();
           }
           else {
             element = element.getAscendant('div', true).getParent();
           }
-          var newId = (element.data("data-index") + 1);
-          var newHtml = '<li data-index="' +newId + '"><button class="usa-accordion-button" aria-controls="accordion_content_' +newId + '">New accordion title</button>' +
-          '<div id="accordion_content_' +newId + '" class="usa-accordion-content">' +
+          var newId = Math.random().toString();
+          newId = newId.replace('.', '');
+          var newHtml = '<li data-index="' + newId + '"><button class="usa-accordion-button" aria-expanded="true" aria-controls="accordion_content_' + newId + '">New accordion title</button>' +
+          '<div id="accordion_content_' + newId + '" class="usa-accordion-content">' +
           '<p>New accordion content</p>' +
           '</div></li>';
           var newContent = new CKEDITOR.dom.element.createFromHtml(newHtml);
